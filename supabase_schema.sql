@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS products (
   name VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
   size VARCHAR(20) NOT NULL,
+  price VARCHAR(50),
   image_url TEXT NOT NULL,
   material VARCHAR(100),
   usage_suggestion TEXT,

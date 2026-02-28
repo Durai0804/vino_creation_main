@@ -1,5 +1,5 @@
 const supabase = require('../config/supabase');
-const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
 const path = require('path');
 
 const STORAGE_BUCKET = 'product-images';
@@ -9,7 +9,7 @@ const STORAGE_BUCKET = 'product-images';
  */
 async function uploadImage(file) {
     const ext = path.extname(file.originalname);
-    const filename = `${uuidv4()}${ext}`;
+    const filename = `${crypto.randomUUID()}${ext}`;
 
     const { data: uploadData, error: uploadError } = await supabase
         .storage
