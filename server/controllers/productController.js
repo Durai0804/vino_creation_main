@@ -1,8 +1,10 @@
 const supabase = require('../config/supabase');
+const { db } = require('../config/firebase');
 const crypto = require('crypto');
 const path = require('path');
 
 const STORAGE_BUCKET = 'product-images';
+const COLLECTION = 'products';
 
 /**
  * Upload an image to Supabase Storage and return the public URL.
@@ -37,8 +39,6 @@ async function uploadImage(file) {
  */
 async function deleteImage(imageUrl) {
     try {
-        // Extract filename from Supabase public URL
-        // Format: https://[project].supabase.co/storage/v1/object/public/[bucket]/[filename]
         const parts = imageUrl.split(`${STORAGE_BUCKET}/`);
         const filename = parts[parts.length - 1];
 
@@ -58,13 +58,12 @@ async function deleteImage(imageUrl) {
 // GET all products
 exports.getAllProducts = async (req, res) => {
     try {
-        const { data, error } = await supabase
-            .from('products')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        res.json({ products: data });
+        const snapshot = await db.collection(COLLECTION).orderBy('created_at', 'desc').get();
+        const products = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+        res.json({ products });
     } catch (error) {
         console.error('Get all products error:', error.message);
         res.status(500).json({ error: 'Failed to fetch products' });
@@ -75,16 +74,13 @@ exports.getAllProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        const { data, error } = await supabase
-            .from('products')
-            .select('*')
-            .eq('id', id)
-            .single();
+        const doc = await db.collection(COLLECTION).doc(id).get();
 
-        if (error) throw error;
-        if (!data) return res.status(404).json({ error: 'Product not found' });
+        if (!doc.exists) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
 
-        res.json({ product: data });
+        res.json({ product: { id: doc.id, ...doc.data() } });
     } catch (error) {
         console.error('Get product error:', error.message);
         res.status(500).json({ error: 'Failed to fetch product' });
@@ -106,22 +102,22 @@ exports.createProduct = async (req, res) => {
 
         const image_url = await uploadImage(req.file);
 
-        const { data, error } = await supabase
-            .from('products')
-            .insert([{
-                name,
-                description,
-                size,
-                price: price || null,
-                material: material || null,
-                usage_suggestion: usage_suggestion || null,
-                image_url,
-            }])
-            .select()
-            .single();
+        const productData = {
+            name,
+            description,
+            size,
+            price: price || null,
+            material: material || null,
+            usage_suggestion: usage_suggestion || null,
+            image_url,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+        };
 
-        if (error) throw error;
-        res.status(201).json({ product: data });
+        const docRef = await db.collection(COLLECTION).add(productData);
+        res.status(201).json({
+            product: { id: docRef.id, ...productData }
+        });
     } catch (error) {
         console.error('Create product error:', error.message);
         res.status(500).json({ error: 'Failed to create product' });
@@ -148,33 +144,20 @@ exports.updateProduct = async (req, res) => {
             updated_at: new Date().toISOString(),
         };
 
-        // If a new image was uploaded, handle it
         if (req.file) {
-            // Delete old image
-            const { data: existing } = await supabase
-                .from('products')
-                .select('image_url')
-                .eq('id', id)
-                .single();
-
-            if (existing?.image_url) {
-                await deleteImage(existing.image_url);
+            const doc = await db.collection(COLLECTION).doc(id).get();
+            if (doc.exists && doc.data().image_url) {
+                await deleteImage(doc.data().image_url);
             }
-
             updates.image_url = await uploadImage(req.file);
         }
 
-        const { data, error } = await supabase
-            .from('products')
-            .update(updates)
-            .eq('id', id)
-            .select()
-            .single();
+        await db.collection(COLLECTION).doc(id).update(updates);
+        const updatedDoc = await db.collection(COLLECTION).doc(id).get();
 
-        if (error) throw error;
-        if (!data) return res.status(404).json({ error: 'Product not found' });
-
-        res.json({ product: data });
+        res.json({
+            product: { id: updatedDoc.id, ...updatedDoc.data() }
+        });
     } catch (error) {
         console.error('Update product error:', error.message);
         res.status(500).json({ error: 'Failed to update product' });
@@ -186,23 +169,12 @@ exports.deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Get image URL before deleting
-        const { data: existing } = await supabase
-            .from('products')
-            .select('image_url')
-            .eq('id', id)
-            .single();
-
-        if (existing?.image_url) {
-            await deleteImage(existing.image_url);
+        const doc = await db.collection(COLLECTION).doc(id).get();
+        if (doc.exists && doc.data().image_url) {
+            await deleteImage(doc.data().image_url);
         }
 
-        const { error } = await supabase
-            .from('products')
-            .delete()
-            .eq('id', id);
-
-        if (error) throw error;
+        await db.collection(COLLECTION).doc(id).delete();
         res.json({ message: 'Product deleted successfully' });
     } catch (error) {
         console.error('Delete product error:', error.message);
