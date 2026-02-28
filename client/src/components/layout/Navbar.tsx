@@ -62,11 +62,12 @@ export default function Navbar() {
                 <div className="flex items-center justify-between h-16 md:h-20">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2 group">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-serif text-lg font-bold
-              ${isDark ? 'bg-gold-muted/20 text-gold' : 'bg-gold/10 text-gold'} 
-              group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-gold/10`}
-                        >
-                            V
+                        <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg shadow-gold/10">
+                            <img
+                                src="/logo.png"
+                                alt="Vino's Creation"
+                                className="w-full h-full object-cover"
+                            />
                         </div>
                         <span className={`font-serif text-xl font-semibold tracking-wide
               ${isDark ? 'text-dark-text' : 'text-charcoal'}`}

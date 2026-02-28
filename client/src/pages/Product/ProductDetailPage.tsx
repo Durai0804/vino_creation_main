@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Ruler, Layers, Sparkles, Hash } from 'lucide-react';
+import { ArrowLeft, Ruler, Layers, Sparkles } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { useProduct } from '../../hooks/useProducts';
 import { useState } from 'react';
@@ -109,29 +109,30 @@ export default function ProductDetailPage() {
                             Kolam Stencil
                         </span>
 
-                        <h1 className={`font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-6
+                        <h1 className={`font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-4
               ${isDark ? 'text-dark-text' : 'text-charcoal'}`}>
                             {product.name}
                         </h1>
 
-                        {/* Info badges */}
-                        <div className="flex flex-wrap gap-3 mb-8">
-                            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm
-                ${isDark ? 'bg-dark-card border border-dark-border text-dark-text/70' : 'bg-beige border border-beige-dark/30 text-light-text'}`}>
-                                <Ruler size={14} className="text-gold" />
-                                {product.size} inches
-                            </div>
-                            {product.material && (
-                                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm
-                  ${isDark ? 'bg-dark-card border border-dark-border text-dark-text/70' : 'bg-beige border border-beige-dark/30 text-light-text'}`}>
-                                    <Layers size={14} className="text-gold" />
-                                    {product.material}
-                                </div>
+                        <div className="flex items-center gap-4 mb-8">
+                            {product.price && (
+                                <p className={`text-2xl font-bold text-gold`}>
+                                    {product.price}
+                                </p>
                             )}
-                            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm
-                ${isDark ? 'bg-dark-card border border-dark-border text-dark-text/40' : 'bg-beige border border-beige-dark/30 text-light-text/50'}`}>
-                                <Hash size={14} className="text-gold" />
-                                {product.id.slice(0, 8)}
+                            <div className="flex flex-wrap gap-3">
+                                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm
+                    ${isDark ? 'bg-dark-card border border-dark-border text-dark-text/70' : 'bg-beige border border-beige-dark/30 text-light-text'}`}>
+                                    <Ruler size={14} className="text-gold" />
+                                    {product.size} inches
+                                </div>
+                                {product.material && (
+                                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm
+                      ${isDark ? 'bg-dark-card border border-dark-border text-dark-text/70' : 'bg-beige border border-beige-dark/30 text-light-text'}`}>
+                                        <Layers size={14} className="text-gold" />
+                                        {product.material}
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -163,16 +164,25 @@ export default function ProductDetailPage() {
                         )}
 
                         {/* CTA */}
-                        <motion.a
-                            href="mailto:contact@vinoscreation.com"
-                            whileHover={{ scale: 1.03 }}
-                            whileTap={{ scale: 0.97 }}
-                            className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-wider
-                bg-gradient-to-r from-gold to-gold-muted text-charcoal w-full sm:w-auto
-                hover:shadow-[0_8px_30px_rgba(212,168,83,0.3)] transition-shadow duration-500"
-                        >
-                            Inquire About This Design
-                        </motion.a>
+                        {(() => {
+                            const message = `Hi, I'm interested in the "${product.name}" kolam stencil.%0A%0ASize: ${product.size} inches${product.price ? `%0APrice: ${product.price}` : ''}%0A%0ACan you provide more details?`;
+                            const whatsappUrl = `https://wa.me/917200331655?text=${message}`;
+
+                            return (
+                                <motion.a
+                                    href={whatsappUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    whileHover={{ scale: 1.03 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-wider
+                                        bg-gradient-to-r from-gold to-gold-muted text-charcoal w-full sm:w-auto
+                                        hover:shadow-[0_8px_30px_rgba(212,168,83,0.3)] transition-shadow duration-500"
+                                >
+                                    Enquire About This Design
+                                </motion.a>
+                            );
+                        })()}
                     </motion.div>
                 </div>
             </div>

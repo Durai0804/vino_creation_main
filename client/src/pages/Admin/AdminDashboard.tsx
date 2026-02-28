@@ -28,13 +28,14 @@ export default function AdminDashboard() {
         name: '',
         description: '',
         size: '6x6',
+        price: '',
         material: '',
         usage_suggestion: '',
         image: null,
     });
 
     const resetForm = () => {
-        setFormData({ name: '', description: '', size: '6x6', material: '', usage_suggestion: '', image: null });
+        setFormData({ name: '', description: '', size: '6x6', price: '', material: '', usage_suggestion: '', image: null });
         setEditingProduct(null);
         setShowForm(false);
         setFormError('');
@@ -46,6 +47,7 @@ export default function AdminDashboard() {
             name: product.name,
             description: product.description,
             size: product.size,
+            price: product.price || '',
             material: product.material || '',
             usage_suggestion: product.usage_suggestion || '',
             image: null,
@@ -345,6 +347,25 @@ export default function AdminDashboard() {
                                             </button>
                                         ))}
                                     </div>
+                                </div>
+
+                                {/* Price */}
+                                <div>
+                                    <label className={`block text-xs font-medium uppercase tracking-wider mb-1.5
+                    ${isDark ? 'text-dark-text/60' : 'text-light-text/60'}`}>
+                                        Price (Optional)
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={formData.price || ''}
+                                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                                        placeholder="e.g. ₹499"
+                                        className={`w-full px-4 py-3 rounded-xl text-sm outline-none transition-all duration-300
+                       ${isDark
+                                                ? 'bg-dark-card border border-dark-border text-dark-text placeholder:text-dark-text/25 focus:border-gold-muted/50'
+                                                : 'bg-beige/50 border border-beige-dark/30 text-charcoal placeholder:text-light-text/30 focus:border-gold/50'
+                                            }`}
+                                    />
                                 </div>
 
                                 {/* Description */}

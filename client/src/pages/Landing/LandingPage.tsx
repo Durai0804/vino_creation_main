@@ -49,7 +49,7 @@ export default function LandingPage() {
                         : 'bg-gradient-to-br from-cream via-beige/40 to-cream'
                         }`} />
                     {/* Decorative Kolam-inspired pattern */}
-                    <svg className="absolute inset-0 w-full h-full opacity-[0.03]" viewBox="0 0 800 800">
+                    <svg className="absolute inset-0 w-full h-full opacity-[0.08]" viewBox="0 0 800 800">
                         <defs>
                             <pattern id="kolam" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
                                 <circle cx="50" cy="50" r="3" fill="currentColor" />
@@ -366,14 +366,16 @@ export default function LandingPage() {
                             bulk orders, or any inquiries about our collection.
                         </p>
                         <motion.a
-                            href="mailto:contact@vinoscreation.com"
+                            href="https://wa.me/917200331655?text=Hi! I'm interested in your Kolam stencils. I'd like to know more."
+                            target="_blank"
+                            rel="noopener noreferrer"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-wider
-                bg-gradient-to-r from-gold to-gold-muted text-charcoal
-                hover:shadow-[0_8px_30px_rgba(212,168,83,0.3)] transition-shadow duration-500"
+                                bg-gradient-to-r from-gold to-gold-muted text-charcoal
+                                hover:shadow-[0_8px_30px_rgba(212,168,83,0.3)] transition-shadow duration-500"
                         >
-                            Contact Us
+                            Contact Us on WhatsApp
                         </motion.a>
                     </motion.div>
                 </div>

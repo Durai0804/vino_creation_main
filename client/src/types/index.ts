@@ -3,6 +3,7 @@ export interface Product {
     name: string;
     description: string;
     size: string;
+    price?: string;
     image_url: string;
     material?: string;
     usage_suggestion?: string;
@@ -14,6 +15,7 @@ export interface ProductFormData {
     name: string;
     description: string;
     size: string;
+    price?: string;
     material?: string;
     usage_suggestion?: string;
     image?: File | null;

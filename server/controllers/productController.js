@@ -94,7 +94,7 @@ exports.getProductById = async (req, res) => {
 // POST create product
 exports.createProduct = async (req, res) => {
     try {
-        const { name, description, size, material, usage_suggestion } = req.body;
+        const { name, description, size, price, material, usage_suggestion } = req.body;
 
         if (!name || !description || !size) {
             return res.status(400).json({ error: 'Name, description, and size are required' });
@@ -112,6 +112,7 @@ exports.createProduct = async (req, res) => {
                 name,
                 description,
                 size,
+                price: price || null,
                 material: material || null,
                 usage_suggestion: usage_suggestion || null,
                 image_url,
@@ -131,7 +132,7 @@ exports.createProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, size, material, usage_suggestion } = req.body;
+        const { name, description, size, price, material, usage_suggestion } = req.body;
 
         if (!name || !description || !size) {
             return res.status(400).json({ error: 'Name, description, and size are required' });
@@ -141,6 +142,7 @@ exports.updateProduct = async (req, res) => {
             name,
             description,
             size,
+            price: price || null,
             material: material || null,
             usage_suggestion: usage_suggestion || null,
             updated_at: new Date().toISOString(),

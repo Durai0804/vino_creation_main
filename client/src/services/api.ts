@@ -31,6 +31,7 @@ export const productService = {
         body.append('name', formData.name);
         body.append('description', formData.description);
         body.append('size', formData.size);
+        if (formData.price) body.append('price', formData.price);
         if (formData.material) body.append('material', formData.material);
         if (formData.usage_suggestion) body.append('usage_suggestion', formData.usage_suggestion);
         if (formData.image) body.append('image', formData.image);
@@ -56,6 +57,7 @@ export const productService = {
         body.append('name', formData.name);
         body.append('description', formData.description);
         body.append('size', formData.size);
+        if (formData.price) body.append('price', formData.price);
         if (formData.material) body.append('material', formData.material);
         if (formData.usage_suggestion) body.append('usage_suggestion', formData.usage_suggestion);
         if (formData.image) body.append('image', formData.image);

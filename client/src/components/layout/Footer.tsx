@@ -7,13 +7,13 @@ export default function Footer() {
     const isDark = theme === 'dark';
 
     const socialLinks = [
-        { icon: Instagram, href: '#', label: 'Instagram' },
-        { icon: Mail, href: 'mailto:contact@vinoscreation.com', label: 'Email' },
-        { icon: Phone, href: 'tel:+91XXXXXXXXXX', label: 'Phone' },
+        { icon: Instagram, href: 'https://www.instagram.com/vino4144/', label: 'Instagram' },
+        { icon: Mail, href: 'mailto:pvino4898@gmail.com', label: 'Email' },
+        { icon: Phone, href: 'https://wa.me/917200331655?text=Hi! I have a general enquiry about Vino\'s Creation.', label: 'WhatsApp' },
     ];
 
     return (
-        <footer className={`relative overflow-hidden ${isDark ? 'bg-charcoal' : 'bg-beige'}`}>
+        <footer className={`relative overflow-hidden ${isDark ? 'bg-charcoal' : 'bg-beige'}`} id="contact">
             {/* Decorative top border */}
             <div className="h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
 
@@ -73,7 +73,12 @@ export default function Footer() {
                             <div className={`flex items-center gap-3 text-sm
                 ${isDark ? 'text-dark-text/60' : 'text-light-text/70'}`}>
                                 <Mail size={16} className="text-gold shrink-0" />
-                                <span>contact@vinoscreation.com</span>
+                                <span>pvino4898@gmail.com</span>
+                            </div>
+                            <div className={`flex items-center gap-3 text-sm
+                ${isDark ? 'text-dark-text/60' : 'text-light-text/70'}`}>
+                                <Phone size={16} className="text-gold shrink-0" />
+                                <span>+91 72003 31655</span>
                             </div>
                             <div className="flex items-center gap-3 mt-4">
                                 {socialLinks.map(({ icon: Icon, href, label }) => (
